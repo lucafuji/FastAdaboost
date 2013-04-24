@@ -9,6 +9,7 @@ LIBRARIES=-lboost_program_options-mt
 ODIR= obj
 EXEC= boost_tree
 OBJS= #Instance.o stringutil.o
+BIN=bin
 
 
 default:all
@@ -19,7 +20,7 @@ MAINOBJ = $(MAIN_SRC:.cpp=.o)
 $(MAINOBJ) : $(OBJS)
 
 $(EXEC) : $(MAINOBJ)
-	$(CPP) -o $(EXEC) $(ODIR)/*.o $(MAINOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
+	$(CPP) -o $(BIN)/$(EXEC) $(ODIR)/*.o $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
 
 exec:$(EXEC)
 
@@ -28,4 +29,4 @@ all: exec
 	
 
 clean:
-	rm -rf $(OBJ)/* $(EXEC)
+	rm -rf $(ODIR)/* $(EXEC)

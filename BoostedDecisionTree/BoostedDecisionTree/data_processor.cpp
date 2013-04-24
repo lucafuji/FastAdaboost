@@ -7,4 +7,4 @@
 //
 
 #include "data_processor.h"
-data_processor::redo_zero_out(<#std::string data#>, <#std::string mu#>, <#std::string ss#>, <#bool replace_meanbool#>, <#bool replace_unrecognized_value#>, <#float val#>)
+static void tomatrix(std::vector<std::vector<float> > input_data,bool replace_unrecognized_value, float val);

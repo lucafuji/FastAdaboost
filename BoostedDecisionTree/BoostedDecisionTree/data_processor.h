@@ -13,7 +13,6 @@
 #include <vector>
 
 class data_processor{
-
 public:
     static void tomatrix(std::vector<std::vector<float> > input_data,bool replace_unrecognized_value, float val); 
     static void z_score(std::string data,bool replace_meanbool,bool replace_unrecognized_value, float val);
