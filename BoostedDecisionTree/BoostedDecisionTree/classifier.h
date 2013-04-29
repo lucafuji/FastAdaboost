@@ -10,19 +10,37 @@
 #define __BoostedDecisionTree__Classifier__
 
 #include <iostream>
-
+#include <boost/shared_ptr.hpp>
+#include <boost/container/list.hpp>
+#include <boost/unordered_map.hpp>
+#include "data_processor.h"
+#include <utility>
+#include "typeredef.h"
 //pure virtual base class for defining the classifier
 class classifier{
 public:
-    virtual void preprocess() = 0;
-    virtual void learn() = 0;
-    virtual int predict() = 0;
+    friend class boost::serialization::access;
+    /*
+     *data : input training data
+     *labels : labels of the training data
+     *ebs : thresold of the convergence
+     */
+    virtual void preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps) = 0;
+    /*
+     *data : processed input training data
+     *weights : weight on each training item
+     *return error and the classification result
+     */
+    virtual std::pair<float,long_vector_ptr_type> learn(vector_ptr_type weights) = 0;
+    /*
+     *instance : instance whose label is to be predicted
+     *return label of the instance
+     */
+    virtual long predict(vector_ptr_type instance) = 0;
+    /*
+     *instances : set of instances to be tested
+     *return error rate
+     */
+    virtual long_vector_ptr_type predict(matrix_ptr_type instances) = 0;
 };
-
-class stump_classifier: public classifier{
-    virtual void preprocess();
-    virtual void learn();
-    virtual int predict();
-};
-
 #endif /* defined(__BoostedDecisionTree__Classifier__) */
