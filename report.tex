@@ -1,0 +1,163 @@
+%
+%  proposal
+%
+%  Created by Ze Wang on 2013-03-31.
+%  Copyright (c) 2013 __MyCompanyName__. All rights reserved.
+%
+\documentclass[11pt,twocolumn]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+\usepackage{indentfirst}
+% \setlength{\parindent}{0pt} 
+% \setlength{\parskip}{2po}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+\usepackage{amsmath}
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Final Project Proposal \\ Fast Ada-boost Using Heuristic Decision Trees}
+\author{ Ze Wang }
+\date{March-31-2013}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+
+\begin{abstract}
+\par{AdaBoost, short for Adaptive Boosting, is a meta machine learning algorithm that can be used in conjunction with many other learning algorithms to improve their performance.Its main idea is to use weak learner to create strong learners and subsequent classifiers built
+are tweaked in favor of those instances misclassified by previous classifier.One kind of weak classifiers is decision tree that uses some
+heuristics to find suboptimal trees such as using information gain or gini impurity.This project aims at implementing 
+a fast ada-boost library based on decision tree classifiers.}
+\end{abstract}
+
+\section{Introduction}
+\par{A concept class C is weakly PAC-learnable if there exists a (weak) learning algorithm \textit{L} and $\gamma > 0$ such that: 
+for all $ c \in C, \epsilon >0, \sigma >0 $ and all distributions \textit{d}:\\
+\[\Pr_{S \sim D} {[}R(hs) \leq \frac{1}{2} - \gamma{]} \geq 1 - \sigma\]\\
+for samples \textit{S} of size $m = poly(\frac{1}{\sigma} )$ for a fixed polynomial. Adaboost is based on this guarantee to
+combine a bunch of weak classifiers. This project will implement logistic Adaboost over a top-down decision tree according to
+\cite{Fast_Tree}.I will use C++ to write the whole library and \cite{Record_Linkage} as the experiment data.}
+
+\section{Heuristic Decision Tree}
+\par{The most popular decision tree implementation is C4.5 and ID3 algorithms. Unfortunately they are not suitable for a fast decision tree growing. Standard implementation of C4.5 algorithm
+will have a time complexity of $O(m \cdot n^2)$ where m is the number of training examples and n is the number of attributes.By applying some conditional independence assumption inspired by Naive
+Bayes, we can develop a fast decision tree algorithm \cite{Fast_Tree} that can run at $O(m \cdot n)$ without losing too much accuracy.}
+\par{
+Most modern decision tree learning algorithm will adopt a purity-based heuristic that measures the purity of the resulting subsets after partitioning the data by the splitting attributes.E.g.
+ID3 , C4,5 use the information gain to find the best attribute, where the information gain is defined as:
+\[I_G(S,X) = Entropy(S) - \sum_x{\frac{|S_x|}{S}Entropy(S_x)}\]
+where S is the set of training examples, X is any attribute and x is its value, and Entropy(S) is defined as\\
+\[Entropy(S) = - |\sum_{i=1}^{|C|}P_S(c_i)logP_s(c_i),\]\\
+where $|C|$ is the number of classes and $P_S(c_i)$ is the ratio of number of examples belonging to $c_i$ in S.}
+\par{
+Entropy measures the uncertainty in a random variables.So generally the attribute that leads to a biggest information gain will cause the most
+significant decrease the entropy of current subset of examples. This tree growing is a recursive process of partitioning the training data and S is associated
+with the current node. The $P_S(c_i)$ is actually $P(c_i|x_p)$ where $x_p$ is the attributes along the path from root to current node and similarly $P_{S_x}(c_i)$
+is $P(c_i|x_p,x)$ on the entire training data.}
+\par{
+So from here we can see the most time-consuming part is computing $P_{S_x}(c_i)$ since it must iterate through each candidate attribute X.\\
+By observing \\
+\begin{align}
+ P(c_i|x_p,x) &= \frac{P(c_i|x_p)P(x|x_p,c_i)}{P(x|x_p)} \\&= \frac {P(c_i|x_p)P(x|x_p,c_i)}{\sum_{i=1}^{|C|}P(c_i|x_p)P(x|x_p,c_i)}
+\end{align}
+}
+
+\par{
+Assume
+	$P(x|x_p,C) = P(x|C)$, 
+this means each attribute is independent of the path attribute assignment $x_p$ give the class.\\
+Then we have \\
+\[P(c_i|x_p,x) \approx \frac{P(c_i|x_p)P(x|c_i)}{\sum_{i=1}^{|C|} P(c_i|x_p)P(x|c_i)}\]\\
+The information gain computed by this equation is called \textit{Independent Information Gain}(IIG).\\
+We noticed that $P(x|c_i)$ can be precomputed and store with a time complexity of $O(m \cdot n)$ and $P(c_i|x_p)$ can be 
+computed by passing through S which takes $O(|S|)$  so at each level, the time complexity for computing $P(c_i|x_p,x)$ is $O(m)$, thus the overall complexity is $O(m \cdot n)$
+}
+
+\section{Adaboost Implementation}
+\par{
+In this project I will implement the AdaBoost according to \cite{Schapire}.It's a generalized implementation of Adaboost where we just update \\
+\[D_{t+1}(i) = \frac{D_t(i)exp(- \alpha_t y_i h_t(x_i))}{Z_t}\] \\
+where $Z_t$ is a normalization factor (chosen so that $D_{t+1}$ will be a distribution, $\alpha_t = \frac{1}{2} ln(\frac{1+r_t}{1-r_t}), Z_t = 2[r_t(1-rt)]^{\frac{1}{2}}$
+The final result is $H(x) = \sum_{t=1}^{T} \alpha_t h_t(x)$ }
+
+\section{Plan}
+\begin{enumerate}
+\item{Survey:April 5 - April 10}\\
+I will look into some related works about how Adaboost is implemented, what kind of heuristic that decision tree can use that
+can make it run fast without losing too much accuracy.
+\item{Implementation:April 11 - April 24}\\
+
+In this stage I will implement the whole algorithm that:
+\begin{itemize}
+\item{Ultimate Goal}:
+	Implement a fast ada-boost library taking advantage of the weak guarantee and using fast heuristic decision tree as the underlying
+weak classifier.
+
+\item{Input}:
+	A set of training instances of which the attributes values are real numbers for training and a set of instance with unknown labels.
+	
+\item{Output}:
+	Predicated label of each of the unknown instances
+
+\item{Implemented language}:
+	C++ with OpenMP
+\end{itemize}
+\item{Experiment:April 24 - May 1}\\
+I will conduct the experiments using the data \cite{Record_Linkage}.
+\item{Presentation and Report:May 21}\\
+\end{enumerate}
+
+\section{Experiment}
+\par{
+I will use \cite{Record_Linkage} as my experiment data.It's Element-wise comparison of records with personal data from a record linkage setting whose goal is to decide from a comparison pattern whether the underlying records belong to one person.
+It has 5749132 instances and 12 attributes.Each of which is a real number and it contains no missing value. However originally,
+this dataset is for multivariate classification thus we need modify the adaboost a little to adapt into this situation.
+Also I will compare the accuracy and run time of my algorithm with those of the Vowpal Wabbit.}
+\bibliographystyle{plain}
+\bibliography{ref}
+\end{document}

@@ -1,0 +1,6 @@
+fast_adaboost*
+*.pdf
+*.bib
+*.o
+*.xcodeproj
+*/obj/*
