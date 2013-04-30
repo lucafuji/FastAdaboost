@@ -4,3 +4,17 @@ fast_adaboost*
 *.o
 *.xcodeproj
 */obj/*
+*.tex
+*.snm
+*.gz
+*.toc
+*.out
+*.log
+*.nav
+*.aux
+*.mtc*
+*.maf
+*.plt
+*.dat
+*.png
+*.py*
