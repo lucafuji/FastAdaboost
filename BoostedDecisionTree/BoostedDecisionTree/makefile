@@ -1,51 +1,86 @@
-.SUFFIXES:.cpp
-.cpp.o:
-	$(CPP) $(INCLUDES) $(CFLAGS) -c $< -o $(ODIR)/$@
+# .SUFFIXES:.cpp
+# .cpp.o:
+# 	$(CPP) $(INCLUDES) $(CFLAGS) -c $< -o $(ODIR)/$@
 
+#compile flags
 CPP=g++
 INCLUDES=-I.:/opt/local/include/
 LDFLAGS=-L/opt/local/lib
 LIBRARIES=-lboost_program_options-mt -lboost_serialization-mt
-ODIR=.
+
+#directories
+ODIR=obj
+TEST_DIR= src
+BIN_DIR=bin
+SRC_DIR = src
+
+#execs
 EXEC= boost_tree
-SRC = data_processor.cpp math_util.cpp matrix_util.cpp  stump_classifier.cpp boost_classifier.cpp feature_hashing_classifier.cpp boost_tree_helper.cpp murmurhash.cpp #classifier.cpp
-SRC_HDR = $(SRC:.cpp=.h)
-OBJS=$(SRC:.cpp=.o)
-
-BIN=bin
-LIB_UTIL_TARGET = libutil.a
-MAIN_SRC = main.cpp
-MAINOBJ = $(MAIN_SRC:.cpp=.o)
-
-TEST_SRC = test.cpp 
-TESTOBJ = $(TEST_SRC:.cpp=.o)
 TEST_EXEC = test
 
-ARCHIVE_OPTIONS = rucsv
+#src objs
+_SRCS = data_processor.cpp math_util.cpp matrix_util.cpp  stump_classifier.cpp boost_classifier.cpp feature_hashing_classifier.cpp boost_tree_helper.cpp murmurhash.cpp #classifier.cpp
+SRCS = $(patsubst %,$(SRC_DIR)/%,$(_SRCS))
+_OBJS = $(_SRCS:.cpp=.o)
+OBJS=  $(patsubst %,$(ODIR)/%,$(_OBJS))
+SRC_HDRS = $(SRCS:.cpp=.h)
+
+DEPDIR = .deps
+MAKEDEPEND = touch $(DEPDIR)/$*.d && makedepend $(CPPFLAGS) -f $(DEPDIR)/$*.d $<
+
+df = $(DEPDIR)/$(*F)
+
+$(ODIR)/%.o :$(SRC_DIR)/%.cpp
+	@$(MAKEDEPEND); \
+	cp $(df).d $(df).P; \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+	-e '/^$$/ d' -e 's/$$/ :/' < $(df).d >> $(df).P; \
+	rm -f $(df).d
+	$(CPP) -c $< $(INCLUDES) $(CFLAGS) -o $@ 
+
+$(TEST_DIR)/%.o:$(TEST_DIR)/%.cpp
+	@$(MAKEDEPEND); \
+	cp $(df).d $(df).P; \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+	-e '/^$$/ d' -e 's/$$/ :/' < $(df).d >> $(df).P; \
+	rm -f $(df).d
+	$(CPP) -c $< $(INCLUDES) $(CFLAGS) -o $@ 
+
+-include $(SRCS:%.cpp=$(DEPDIR)/%.P)	
+# %.o : %.c
+# 	$(COMPILE.c) -MD -o $@ $<
+# 	@cp $*.d $*.P; \
+# 	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+# 	-e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+# 	rm -f $*.d
+
+
+
+MAIN_SRC = $(SRC_DIR)/main.cpp
+MAINOBJ = $(ODIR)/main.o
+
+TEST_SRC = $(TEST_DIR)/test.cpp 
+TESTOBJ = $(TEST_DIR)/test.o
+
 
 default:all
-
-$(OBJS): $(SRC) $(SRC_HDR)
-
-$(LIB_UTIL_TARGET): $(OBJS)
-	ar $(ARCHIVE_OPTIONS) $(ODIR)/$(LIB_UTIL_TARGET) $(OBJS)
 	
-$(MAINOBJ) : $(LIB_UTIL_TARGET)
-$(TESTOBJ) : $(LIB_UTIL_TARGET)
-
-
+$(MAINOBJ) : $(OBJS)
+$(TESTOBJ) : $(OBJS)
+ 
 run_test:test
-	bin/test
+	$(BIN_DIR)/test
 	
 test:$(TESTOBJ)
-	$(CPP) -o $(BIN)/$(TEST_EXEC) $(ODIR)/$(LIB_UTIL_TARGET) $(ODIR)/$(TESTOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
+	$(CPP) -o $(BIN_DIR)/$(TEST_EXEC) $(OBJS) $(TESTOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
 
 $(EXEC) : $(MAINOBJ)
-	$(CPP) -o $(BIN)/$(EXEC) $(ODIR)/$(LIB_UTIL_TARGET) $(ODIR)/$(MAINOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
+	$(CPP) -o $(BIN_DIR)/$(EXEC) $(OBJS) $(MAINOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
 
 exec:$(EXEC)
 
 all: exec
 
 clean:
-	rm -rf $(ODIR)/*.o $(ODIR)/*.a  $(BIN)/$(EXEC) 
+	rm -rf $(ODIR)/*.o $(BIN_DIR)/$(EXEC) $(BIN_DIR)/$(TEST_EXEC) 
+# DO NOT DELETE
