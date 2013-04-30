@@ -13,18 +13,25 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/vector.hpp>
-#include <boost/serialization/split_member.hpp>
-#include <boost/serialization/vector.hpp>
 #include <boost/serialization/shared_ptr.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/export.hpp>
 #include "classifier.h"
 #include "stump_classifier.h"
 
 class stump_classifier;
 
+
 class boost_classifier:public classifier{
 public:
     friend class boost::serialization::access;
     boost_classifier(long rounds = 20):rounds(rounds),bc_weights(vector_ptr_type(new uvector(rounds))){
+    };
+    boost_classifier(const boost_classifier& another){
+        rounds = another.rounds;
+        bc_weights = another.bc_weights;
+        basic_classifiers = another.basic_classifiers;
     };
     void preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps);
     std::pair<float,long_vector_ptr_type> learn(vector_ptr_type weights);
@@ -40,6 +47,7 @@ private:
     
     template <class Ar>
     void serialize(Ar & ar, const unsigned int version){
+        ar & boost::serialization::base_object<classifier>(*this);
         ar & rounds;
         ar & bc_weights;
         ar & basic_classifiers;

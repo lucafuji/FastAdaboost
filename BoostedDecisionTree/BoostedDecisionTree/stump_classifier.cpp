@@ -19,6 +19,7 @@
 #include <numeric>
 #include <cstdlib>
 
+BOOST_CLASS_EXPORT(stump_classifier)
 void stump_classifier::preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps)
 {
     std::cout<<"stump begin preprocessing"<<std::endl;
@@ -116,7 +117,6 @@ std::pair<float,long_vector_ptr_type> stump_classifier::learn(vector_ptr_type we
     float e = std::numeric_limits<float>::infinity();
     long nrow = p_data->data->size1();
     long ncol = p_data->data->size2();
-    std::cout<<(*weights)<<std::endl;
     larger_than_zero ltz;
     less_than_or_equal_to_zero ltez;
     for (long col = 0;col < ncol; ++col){
@@ -139,7 +139,7 @@ std::pair<float,long_vector_ptr_type> stump_classifier::learn(vector_ptr_type we
         uvector pos((*stump)["l"]->size());
         uvector neg((*stump)["l"]->size());
         float negsum;
-        std::pair<long_vector_ptr_type,long_vector_ptr_type> judge_pair = matrix_util::judge_vector_pair<longvector,longvector,larger_than_zero>((*stump)["l"]->begin(), (*stump)["l"]->end(),ltz);
+        std::pair<long_vector_ptr_type,long_vector_ptr_type> judge_pair = matrix_util::judge_vector_pair<longvector,longvector,larger_than_zero>((*stump)["l"]->begin(), (*stump)["l"]->end(),0,ltz);
         
         uvector ltz_vector(ublas::element_prod(*(judge_pair.first),d));
         uvector ltez_vector(ublas::element_prod(*(judge_pair.second),d));

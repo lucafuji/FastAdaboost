@@ -7,7 +7,6 @@
 //
 
 #include <iostream>
-//#include "stringutil.h"
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
 #include "boost_tree_helper.h"
@@ -25,7 +24,7 @@ int main(int argc, const char * argv[])
     ("final_predictor,f", po::value<std::string>(), "path to store the predictor")
     ("output,o", po::value<std::string>(), "path to store the predicted labels")
     ("do_feature_hashing","number of hash bits")
-    ("num_hash_bit", po::value<int>()->default_value(0), "number of hash bits")
+    ("num_hash_bits", po::value<int>()->default_value(0), "number of hash bits")
     ("verbose,v", "print verbose report")
     ;
     po::variables_map vm;

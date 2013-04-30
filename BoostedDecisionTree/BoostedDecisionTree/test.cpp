@@ -33,31 +33,39 @@ int main(){
     std::cout << conj (v) << std::endl;
     std::cout << real (v) << std::endl;
     std::cout << imag (v) << std::endl;
-    std::cout << trans (v) << std::endl;
+    std::cout <<"trans"<< trans (v) << std::endl;
     std::cout << herm (v) << std::endl;
-    
+     cout<<"vector element_prod"<<element_prod(v,v)<<endl;
     
     cout<<"*******************************"<<endl;
     matrix<double> m (5, 5);
     for (unsigned i = 0; i < m.size1 (); ++ i)
         for (unsigned j = 0; j < m.size2 (); ++ j)
             m (i, j) = 5 * i + j;
-    cout<<m<<endl;
+    
+    matrix<double> m2 (5, 5);
+    for (unsigned i = 0; i < m.size1 (); ++ i)
+        for (unsigned j = 0; j < m.size2 (); ++ j)
+            m2 (i, j) = 5 * i + j;
+    cout<<m<<" "<<m2<<endl;
+    cout<<"matrix product"<<prod(m,m2)<<endl;
+    cout<<"matrix element prod"<<element_prod(m,m2)<<endl;
     matrix_range<matrix<double> > mr (m, range (1, 3), range (1, 3));
     std::cout << mr << std::endl;
+
     cout<<"*******************************"<<endl;
     typedef uvector::iterator basic_iterator;
-    is_non_zero predicate;
-    typedef boost::filter_iterator<is_non_zero,basic_iterator> filter_iter;
+    is_non_zero<float> predicate;
+    typedef boost::filter_iterator<is_non_zero<float>,basic_iterator> filter_iter;
     
     filter_iter first(predicate,v.begin(),v.end());
     filter_iter last(predicate,v.end(),v.end());
     uvector non_zero_vector(std::distance(first,last));
     std::copy(first, last,non_zero_vector.begin());
     cout<<non_zero_vector<<endl;
-    cout<<"*******************************"<<endl;
-    scalar_vector<double> unit_vector (5, 1);
-    cout<<unit_vector+v<<endl;
+    cout<<"*************unit vector***************"<<endl;
+    unit_vector<double> unit_vector (5);
+    cout<<unit_vector<<endl;
     cout<<"*******************************"<<endl;
     boost::unordered_map<string, string> map;
     map["shit"]= "fuck";
@@ -96,6 +104,10 @@ int main(){
     cout<<v*3<<endl;
     cout<<"*******************************"<<endl;
     cout<<(*matrix_util::arg_sort(matrix_ptr_type(new umatrix(3,3))).first)<<endl;
+    cout<<"*********matrix time vector*******************"<<endl;
+    scalar_matrix<long> scalar_matrix(3,5,2);
+    scalar_vector<long> scalar_vector(5,1);
+    cout<<prod(scalar_matrix,scalar_vector)<<endl;
     cout<<"*******************************"<<endl;
     return 0;
 }

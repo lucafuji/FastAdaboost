@@ -11,9 +11,6 @@
 
 #include <iostream>
 #include <boost/shared_ptr.hpp>
-#include <boost/container/list.hpp>
-#include <boost/unordered_map.hpp>
-#include "data_processor.h"
 #include <utility>
 #include "typeredef.h"
 //pure virtual base class for defining the classifier
@@ -42,5 +39,10 @@ public:
      *return error rate
      */
     virtual long_vector_ptr_type predict(matrix_ptr_type instances) = 0;
+    
+    template <class Ar>
+    void serialize(Ar & ar, const unsigned int version){
+    }
+    
 };
 #endif /* defined(__BoostedDecisionTree__Classifier__) */

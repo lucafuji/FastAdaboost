@@ -11,8 +11,12 @@
 
 #include <iostream>
 #include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/split_member.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 #include "typeredef.h"
 #include "classifier.h"
 #include "boost_classifier.h"
@@ -28,6 +32,7 @@ struct processed_data{
     long_vector_ptr_type tlabel;
     std::vector<stump_map_ptr> stump_map_vector;
 };
+
 
 class stump_classifier:public classifier{
 public:
@@ -60,9 +65,11 @@ private:
     
     template <class Ar>
     void serialize(Ar & ar, const unsigned int version){
+        ar & boost::serialization::base_object<classifier>(*this);
         ar & v;
         ar & f;
         ar & c;
     }
 };
+
 #endif /* defined(__BoostedDecisionTree__stump_classifier__) */

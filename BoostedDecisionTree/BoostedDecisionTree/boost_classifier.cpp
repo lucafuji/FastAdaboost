@@ -11,6 +11,8 @@
 #include <algorithm>
 #include "matrix_util.h"
 
+BOOST_CLASS_EXPORT(boost_classifier)
+
 void boost_classifier::preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps)
 {
     std::cout<<"boost begin preprocessing"<<std::endl;
@@ -70,5 +72,5 @@ long  boost_classifier::predict(vector_ptr_type instance)
     for(int i = 0;i<rounds;i++){
         p_label+=(*bc_weights)(i)*basic_classifiers[i]->predict(instance);
     }
-    return p_label>0;
+    return p_label>0?1:-1;
 }

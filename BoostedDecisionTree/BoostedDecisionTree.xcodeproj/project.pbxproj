@@ -14,9 +14,9 @@
 		FBB37737172CC47300092972 /* boost_classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBB37735172CC47300092972 /* boost_classifier.cpp */; };
 		FBB3773A172CC8AA00092972 /* boost_tree_helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBB37738172CC8AA00092972 /* boost_tree_helper.cpp */; };
 		FBB3773D172DF9A900092972 /* feature_hashing_classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBB3773B172DF9A800092972 /* feature_hashing_classifier.cpp */; };
+		FBB3773F172E094F00092972 /* murmurhash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBB3773E172E094F00092972 /* murmurhash.cpp */; };
 		FBC63AF3170E39D700150828 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBC63AF2170E39D700150828 /* main.cpp */; };
 		FBC63AF5170E39D700150828 /* BoostedDecisionTree.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBC63AF4170E39D700150828 /* BoostedDecisionTree.1 */; };
-		FBC69C11171611C40014806A /* stringutil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBC69C0E171611C40014806A /* stringutil.cpp */; };
 		FBC69C13171611F40014806A /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = FBC69C12171611F40014806A /* makefile */; };
 		FBC69C15171612810014806A /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = FBC69C14171612810014806A /* makefile */; };
 		FBC69C1B17161AF60014806A /* data_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBC69C1917161AF60014806A /* data_processor.cpp */; };
@@ -50,11 +50,11 @@
 		FBB37739172CC8AA00092972 /* boost_tree_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_tree_helper.h; sourceTree = "<group>"; };
 		FBB3773B172DF9A800092972 /* feature_hashing_classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature_hashing_classifier.cpp; sourceTree = "<group>"; };
 		FBB3773C172DF9A800092972 /* feature_hashing_classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feature_hashing_classifier.h; sourceTree = "<group>"; };
+		FBB3773E172E094F00092972 /* murmurhash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = murmurhash.cpp; sourceTree = "<group>"; };
+		FBB37740172E0A3400092972 /* murmurhash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = murmurhash.h; sourceTree = "<group>"; };
 		FBC63AEF170E39D700150828 /* BoostedDecisionTree */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BoostedDecisionTree; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBC63AF2170E39D700150828 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		FBC63AF4170E39D700150828 /* BoostedDecisionTree.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BoostedDecisionTree.1; sourceTree = "<group>"; };
-		FBC69C0E171611C40014806A /* stringutil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stringutil.cpp; sourceTree = "<group>"; };
-		FBC69C0F171611C40014806A /* stringutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringutil.h; sourceTree = "<group>"; };
 		FBC69C12171611F40014806A /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
 		FBC69C14171612810014806A /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = makefile; path = ../../../../fsp/l2/makefile; sourceTree = "<group>"; };
 		FBC69C17171619910014806A /* classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = classifier.h; sourceTree = "<group>"; };
@@ -92,12 +92,11 @@
 		FBC63AF1170E39D700150828 /* BoostedDecisionTree */ = {
 			isa = PBXGroup;
 			children = (
+				FBB3773E172E094F00092972 /* murmurhash.cpp */,
 				FBB37735172CC47300092972 /* boost_classifier.cpp */,
 				FBB37736172CC47300092972 /* boost_classifier.h */,
 				FBC69C12171611F40014806A /* makefile */,
 				FBC69C14171612810014806A /* makefile */,
-				FBC69C0E171611C40014806A /* stringutil.cpp */,
-				FBC69C0F171611C40014806A /* stringutil.h */,
 				FBC63AF2170E39D700150828 /* main.cpp */,
 				FBC63AF4170E39D700150828 /* BoostedDecisionTree.1 */,
 				FBC69C17171619910014806A /* classifier.h */,
@@ -115,6 +114,7 @@
 				FBB37739172CC8AA00092972 /* boost_tree_helper.h */,
 				FBB3773B172DF9A800092972 /* feature_hashing_classifier.cpp */,
 				FBB3773C172DF9A800092972 /* feature_hashing_classifier.h */,
+				FBB37740172E0A3400092972 /* murmurhash.h */,
 			);
 			path = BoostedDecisionTree;
 			sourceTree = "<group>";
@@ -171,7 +171,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBC63AF3170E39D700150828 /* main.cpp in Sources */,
-				FBC69C11171611C40014806A /* stringutil.cpp in Sources */,
 				FBC69C13171611F40014806A /* makefile in Sources */,
 				FBC69C15171612810014806A /* makefile in Sources */,
 				FBC69C1B17161AF60014806A /* data_processor.cpp in Sources */,
@@ -182,6 +181,7 @@
 				FBB37737172CC47300092972 /* boost_classifier.cpp in Sources */,
 				FBB3773A172CC8AA00092972 /* boost_tree_helper.cpp in Sources */,
 				FBB3773D172DF9A900092972 /* feature_hashing_classifier.cpp in Sources */,
+				FBB3773F172E094F00092972 /* murmurhash.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

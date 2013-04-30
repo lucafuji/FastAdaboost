@@ -33,7 +33,7 @@ public:
     static boost::shared_ptr<ReturnType> non_zeros(typename InputType::iterator begin,typename InputType::iterator end,int extra_dimension = 0,double eps = EPS);
     
     template <class InputType,class ReturnType,class Predicate>
-        static boost::shared_ptr<ReturnType> judge_vector(typename InputType::iterator begin,typename InputType::iterator end,,int negative_value = 0,Predicate predicate = Predicate());
+        static boost::shared_ptr<ReturnType> judge_vector(typename InputType::iterator begin,typename InputType::iterator end,int negative_value = 0,Predicate predicate = Predicate());
     
     template <class InputType,class ReturnType,class Predicate>
         static std::pair<boost::shared_ptr<ReturnType>,boost::shared_ptr<ReturnType> > judge_vector_pair(typename InputType::iterator begin,typename InputType::iterator end,int negative_value = 0,Predicate predicate = Predicate());
@@ -65,21 +65,21 @@ boost::shared_ptr<ReturnType> matrix_util::non_zeros(typename InputType::iterato
 
 
 template <class InputType,class ReturnType,class Predicate>
-boost::shared_ptr<ReturnType> matrix_util::judge_vector(typename InputType::iterator begin,typename InputType::iterator end,Predicate predicate)
+boost::shared_ptr<ReturnType> matrix_util::judge_vector(typename InputType::iterator begin,typename InputType::iterator end,int negative_value,Predicate predicate)
 {
     boost::shared_ptr<ReturnType> result(new ReturnType(std::distance(begin, end)));
     typedef typename InputType::iterator Iterator;
     typedef typename ReturnType::iterator ReturnIterator;
     ReturnIterator result_iter = result->begin();
     for(Iterator iter = begin;iter!=end;++iter,++result_iter){
-        *result_iter = predicate(*iter)?1:0;
+        *result_iter = predicate(*iter)?1:negative_value;
     }
     return result;
 }
 
 
 template <class InputType,class ReturnType,class Predicate>
-std::pair<boost::shared_ptr<ReturnType>,boost::shared_ptr<ReturnType> > matrix_util::judge_vector_pair(typename InputType::iterator begin,typename InputType::iterator end,Predicate predicate)
+std::pair<boost::shared_ptr<ReturnType>,boost::shared_ptr<ReturnType> > matrix_util::judge_vector_pair(typename InputType::iterator begin,typename InputType::iterator end,int negative_value,Predicate predicate)
 {
     typedef typename InputType::iterator Iterator;
     typedef typename ReturnType::iterator ReturnIterator;
@@ -90,9 +90,9 @@ std::pair<boost::shared_ptr<ReturnType>,boost::shared_ptr<ReturnType> > matrix_u
     for(Iterator iter = begin;iter!=end;++iter,++result1_iter,++result2_iter){
         if(predicate(*iter)){
             *result1_iter = 1;
-            *result2_iter = 0;
+            *result2_iter = negative_value;
         }else{
-            *result1_iter = 0;
+            *result1_iter = negative_value;
             *result2_iter = 1;
         }
     }
