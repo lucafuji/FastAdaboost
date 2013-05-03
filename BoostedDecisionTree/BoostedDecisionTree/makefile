@@ -19,19 +19,19 @@ EXEC= boost_tree
 TEST_EXEC = test
 
 #src objs
-_SRCS = data_processor.cpp math_util.cpp matrix_util.cpp  stump_classifier.cpp boost_classifier.cpp feature_hashing_classifier.cpp boost_tree_helper.cpp murmurhash.cpp #classifier.cpp
+_SRCS = data_processor.cpp math_util.cpp stump_classifier.cpp boost_classifier.cpp feature_hashing_classifier.cpp boost_tree_helper.cpp murmurhash.cpp #classifier.cpp
 SRCS = $(patsubst %,$(SRC_DIR)/%,$(_SRCS))
 _OBJS = $(_SRCS:.cpp=.o)
 OBJS=  $(patsubst %,$(ODIR)/%,$(_OBJS))
 SRC_HDRS = $(SRCS:.cpp=.h)
 
 DEPDIR = .deps
-MAKEDEPEND = touch $(DEPDIR)/$*.d && makedepend $(CPPFLAGS) -f $(DEPDIR)/$*.d $<
+#MAKEDEPEND = touch $(DEPDIR)/$*.d && makedepend $(CPPFLAGS) -f $(DEPDIR)/$*.d $<
 
 df = $(DEPDIR)/$(*F)
 
 $(ODIR)/%.o :$(SRC_DIR)/%.cpp
-	@$(MAKEDEPEND); \
+	#@$(MAKEDEPEND); \
 	cp $(df).d $(df).P; \
 	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
 	-e '/^$$/ d' -e 's/$$/ :/' < $(df).d >> $(df).P; \
@@ -79,6 +79,8 @@ $(EXEC) : $(MAINOBJ)
 
 exec:$(EXEC)
 
+debug : $(MAINOBJ)
+	$(CPP) -o $(BIN_DIR)/$(EXEC) $(OBJS) $(MAINOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES) 
 all: exec
 
 clean:

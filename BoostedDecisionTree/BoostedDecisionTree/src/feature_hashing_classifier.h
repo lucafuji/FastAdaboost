@@ -36,8 +36,8 @@ public:
         len = another.len;
         hash_matrix = another.hash_matrix;
     }
-    virtual void preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps);
-    virtual std::pair<float,long_vector_ptr_type> learn(vector_ptr_type weights);
+    virtual processed_data_ptr preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps);
+    virtual std::pair<float,long_vector_ptr_type> learn(processed_data_ptr p_data,vector_ptr_type weights);
     virtual long predict(vector_ptr_type instance);
     virtual long_vector_ptr_type predict(matrix_ptr_type instances);
 private:

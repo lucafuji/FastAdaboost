@@ -12,7 +12,23 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <utility>
+#include <boost/unordered_map.hpp>
 #include "typeredef.h"
+
+typedef boost::unordered_map<std::string, long_vector_ptr_type> stump_map;
+typedef boost::shared_ptr<stump_map> stump_map_ptr;
+
+struct processed_data{
+    long_matrix_ptr_type ind;
+    matrix_ptr_type data;
+    matrix_ptr_type tdata;
+    long_matrix_ptr_type label;
+    long_vector_ptr_type tlabel;
+    std::vector<stump_map_ptr> stump_map_vector;
+};
+
+typedef boost::shared_ptr<processed_data> processed_data_ptr;
+
 //pure virtual base class for defining the classifier
 class classifier{
 public:
@@ -22,13 +38,14 @@ public:
      *labels : labels of the training data
      *ebs : thresold of the convergence
      */
-    virtual void preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps) = 0;
+    
+    virtual processed_data_ptr preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps) = 0;
     /*
      *data : processed input training data
      *weights : weight on each training item
      *return error and the classification result
      */
-    virtual std::pair<float,long_vector_ptr_type> learn(vector_ptr_type weights) = 0;
+    virtual std::pair<float,long_vector_ptr_type> learn(processed_data_ptr processed_data,vector_ptr_type weights) = 0;
     /*
      *instance : instance whose label is to be predicted
      *return label of the instance

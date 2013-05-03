@@ -33,17 +33,16 @@ public:
         bc_weights = another.bc_weights;
         basic_classifiers = another.basic_classifiers;
     };
-    void preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps);
-    std::pair<float,long_vector_ptr_type> learn(vector_ptr_type weights);
+    
+    processed_data_ptr preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps);
+    std::pair<float,long_vector_ptr_type> learn(processed_data_ptr p_data,vector_ptr_type weights);
     long_vector_ptr_type predict(matrix_ptr_type instances);
     long predict(vector_ptr_type instances);
 private:
     long rounds;
     boost::shared_ptr<stump_classifier> basic_classifier;
     std::vector<boost::shared_ptr<stump_classifier> > basic_classifiers;
-    matrix_ptr_type data;
     vector_ptr_type bc_weights;
-    long_vector_ptr_type label;
     
     template <class Ar>
     void serialize(Ar & ar, const unsigned int version){

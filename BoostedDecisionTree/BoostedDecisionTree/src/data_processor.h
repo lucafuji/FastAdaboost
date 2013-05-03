@@ -30,7 +30,7 @@ public:
      * params: filename contains the input data
      * return a smart pointer point to the matrix representation of the input data
      */
-    static std::pair<matrix_ptr_type,long_vector_ptr_type> load_data(std::istream& input_stream) throw (std::exception);
+    static std::pair<matrix_ptr_type,long_vector_ptr_type> load_data(std::istream& input_stream,bool sparse) throw (std::exception);
     /**
      * params: the input data
      * return a tuple (new_data,mean vector,standard deviation vector)

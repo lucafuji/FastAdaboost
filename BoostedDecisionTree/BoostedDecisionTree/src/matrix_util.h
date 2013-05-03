@@ -26,11 +26,11 @@
 #include <vector>
 class matrix_util{
 public:
-    
-    static std::pair<long_matrix_ptr_type,matrix_ptr_type> arg_sort(matrix_ptr_type matrix,int axis = 0);
-    
+    template <class Matrix_Type>
+        static std::pair<long_matrix_ptr_type,boost::shared_ptr<Matrix_Type> > arg_sort(boost::shared_ptr<Matrix_Type > matrix,int axis = 0);
+
     template <class InputType,class ReturnType>
-    static boost::shared_ptr<ReturnType> non_zeros(typename InputType::iterator begin,typename InputType::iterator end,int extra_dimension = 0,double eps = EPS);
+        static boost::shared_ptr<ReturnType> non_zeros(typename InputType::iterator begin,typename InputType::iterator end,int extra_dimension = 0,double eps = EPS);
     
     template <class InputType,class ReturnType,class Predicate>
         static boost::shared_ptr<ReturnType> judge_vector(typename InputType::iterator begin,typename InputType::iterator end,int negative_value = 0,Predicate predicate = Predicate());
@@ -42,6 +42,44 @@ public:
         static boost::shared_ptr<ReturnType> compare_vector(typename Type1::iterator begin1,typename Type1::iterator end1,typename Type2::iterator begin2,Predicate predicate = Predicate());
     
 };
+
+template <class Matrix_Type>
+    std::pair<long_matrix_ptr_type,boost::shared_ptr<Matrix_Type> > matrix_util::arg_sort(boost::shared_ptr<Matrix_Type> matrix,int axis)
+{
+    typedef boost::shared_ptr<Matrix_Type> m_ptr_type;
+    long nrow = matrix->size1();
+    long ncol = matrix->size2();
+    long_matrix_ptr_type index(new longmatrix(nrow,ncol));
+    m_ptr_type sorted_matrix(new Matrix_Type(nrow,ncol));
+    // do column sorting
+    if(axis == 0){
+        for(long j = 0;j < ncol; j++){
+            ublas::unbounded_array<std::pair<float,long> > valueIndexVectors(nrow);
+            for(long i = 0;i < nrow;i++){
+                valueIndexVectors[i] = std::make_pair((*matrix)(i,j),i);
+            }
+            sort(boost::iterator_range<ublas::unbounded_array<std::pair<float,long> > ::iterator>(valueIndexVectors.begin(),valueIndexVectors.end()));
+            for(long i = 0;i<nrow;i++){
+                (*index)(i,j) =valueIndexVectors[i].second;
+                (*sorted_matrix)(i,j) = valueIndexVectors[i].first;
+            }
+        }
+    }else{// do row sorting
+        for(long i = 0;i < nrow; i++){
+            ublas::unbounded_array<std::pair<float,long> > valueIndexVectors(ncol);
+            for(long j = 0;j<ncol;j++){
+                valueIndexVectors[j] = std::make_pair((*matrix)(i,j),j);
+            }
+            sort(boost::iterator_range<ublas::unbounded_array<std::pair<float,long> > ::iterator>(valueIndexVectors.begin(),valueIndexVectors.end()));
+            for(long j = 0;i<ncol;i++){
+                (*index)(i,j) = valueIndexVectors[j].second;
+                (*sorted_matrix)(i,j) = valueIndexVectors[i].first;
+            }
+        }
+    }
+    return std::make_pair(index,sorted_matrix);
+}
+
 
 template <class InputType,class ReturnType>
 boost::shared_ptr<ReturnType> matrix_util::non_zeros(typename InputType::iterator begin,typename InputType::iterator end,int extra_dimension,double eps)

@@ -23,8 +23,10 @@ int main(int argc, const char * argv[])
     ("predictor,p", po::value<std::string>(), "predictor to be called")
     ("final_predictor,f", po::value<std::string>(), "path to store the predictor")
     ("output,o", po::value<std::string>(), "path to store the predicted labels")
-    ("do_feature_hashing","number of hash bits")
-    ("num_hash_bits", po::value<int>()->default_value(0), "number of hash bits")
+    ("do_feature_hashing,d","whether to do feature hashing")
+    ("num_hash_bits,n", po::value<long>()->default_value(0), "number of hash bits")
+    ("sparse,s", "whether the input data is sparse")
+    ("nrounds,r",po::value<long>()->default_value(2), "number of rounds for adaboost")
     ("verbose,v", "print verbose report")
     ;
     po::variables_map vm;
@@ -39,6 +41,9 @@ int main(int argc, const char * argv[])
     
     if(vm.count("help")){
         cout<<desc<<"\n";
+        cout<<"Sample usage:"<<endl;
+        cout<<"For training: cat inputfile| ./boost_tree -f predictor"<<endl;
+        cout<<"For predicting: cat inputfile| ./boost_tree -p predictor -o outputfile"<<endl;
         return 0;
     }
     

@@ -22,7 +22,7 @@ struct is_zero{
 template <>
 struct is_zero<float>{
     is_zero(double eps = EPS){}
-    bool operator()(float x) { return abs(x)<eps; }
+    bool operator()(float x) { return fabs(x)<eps; }
     float eps;
 };
 
@@ -34,7 +34,7 @@ struct is_non_zero{
 template <>
 struct is_non_zero<float>{
     is_non_zero(double eps = EPS){}
-    bool operator()(float x) { return abs(x)>=eps; }
+    bool operator()(float x) { return fabs(x)>=eps; }
     float eps;
 };
 
@@ -50,7 +50,7 @@ struct less_than_or_equal_to_zero{
         
 struct not_equal{
     not_equal(double eps = EPS){}
-    bool operator()(float x1,float x2) { return abs(x1-x2)>=eps; }
+    bool operator()(float x1,float x2) { return fabs(x1-x2)>=eps; }
     float eps;
 };
         
