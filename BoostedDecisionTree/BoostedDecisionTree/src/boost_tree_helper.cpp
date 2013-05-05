@@ -48,7 +48,7 @@ void print_verbose_report(long_vector_ptr_type predicted_labels,long_vector_ptr_
     error = (fp+fn)/1.0/predicted_labels->size();
     std::cout<<"Precision is "<<precision<<std::endl;
     std::cout<<"Recall is "<<recall<<std::endl;
-    std::cout<<"error rate  is "<<error<<std::endl;
+    std::cout<<"Error rate is "<<error<<std::endl;
 }
 
 
@@ -66,7 +66,7 @@ void train(po::variables_map vm) throw (std::exception)
             std::cout<<"no feature hashing"<<std::endl;
             classifier_ptr = new boost_classifier(vm["nrounds"].as<long>());
         }
-        processed_data_ptr p_data = classifier_ptr->preprocess(data_pair.first, data_pair.second,EPS);
+        processed_data_ptr p_data = classifier_ptr->preprocess(data_pair.first, data_pair.second,vm["episilon"].as<float>());
         
         vector_ptr_type weights(new uvector(0));//stub weights for boost classifier
         classifier_ptr->learn(p_data,weights);

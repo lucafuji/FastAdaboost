@@ -27,6 +27,7 @@ int main(int argc, const char * argv[])
     ("num_hash_bits,n", po::value<long>()->default_value(0), "number of hash bits")
     ("sparse,s", "whether the input data is sparse")
     ("nrounds,r",po::value<long>()->default_value(2), "number of rounds for adaboost")
+    ("episilon,e",po::value<float>()->default_value(1e-6), "the difference between values that we accept")
     ("verbose,v", "print verbose report")
     ;
     po::variables_map vm;
