@@ -9,13 +9,13 @@ To compile and build the program, you need to install boost library http://www.b
 After install the boost library,just input "make" under BoostedDecisionTree/BoostedDecisionTree/
 
 ===============================================
-Fast Heuristic Decision Tree
+<h5>FFast Heuristic Decision Tree</h5>
 
 Preprocessing the data by clustering data points with same label and data points with close value along each feature.
 Try to find the best value threshold along each feature.
 
 ===============================================
-Feature Hashing
+<h5>Feature Hashing</h5>
 
 Feature hashing is an effective strategy for dimensionality reduction and practical nonparametric estimation.Feature Hashing for Large Scale Multitask Learning show that interaction between random subspaces is negligible with high probability.
 In this library I apply feature hashing to the data to further speed up the learning and predicting phase.
