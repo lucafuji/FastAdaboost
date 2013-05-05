@@ -9,7 +9,7 @@ To compile and build the program, you need to install boost library http://www.b
 After install the boost library,just input "make" under BoostedDecisionTree/BoostedDecisionTree/
 
 ===============================================
-<h5>FFast Heuristic Decision Tree</h5>
+<h5>Fast Heuristic Decision Tree</h5>
 
 Preprocessing the data by clustering data points with same label and data points with close value along each feature.
 Try to find the best value threshold along each feature.
