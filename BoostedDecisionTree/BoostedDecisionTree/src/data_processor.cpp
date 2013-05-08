@@ -16,33 +16,35 @@
 
 tuple_ptr_type data_processor::z_score(matrix_ptr_type data)
 {
+    std::cout<<"Begin normalizing"<<std::endl;
     long ncol = data->size2();
     long nrow = data->size1();
-    uvector mean_vector(ncol);
-    uvector std_vector(ncol);
+    vector_ptr_type mean_vector(new uvector(ncol));
+    vector_ptr_type std_vector(new uvector(ncol));
     for (unsigned j = 0; j < ncol; ++ j){
-        mean_vector[j]= 0;
+        (*mean_vector)(j)= 0;
         for(unsigned i = 0; i < nrow; ++i){
-            mean_vector[j] = (1-1.0/(i+1))*mean_vector(j) + 1.0/(i+1)*((*data)(i,j));
+            ((*mean_vector)(j)) = (1-1.0/(i+1))*((*mean_vector)(j)) + 1.0/(i+1)*((*data)(i,j));
         }
     }
     
     for (unsigned j = 0; j < ncol; ++ j){
-        std_vector[j] = 0;
+        (*std_vector)(j) = 0;
         for(unsigned i = 0; i < nrow; ++i){
-            std_vector[j] = (1-1.0/(i+1))*std_vector(j) + 1.0/(i+1)*pow((*data)(i,j) - mean_vector(j),2.0);
+            (*std_vector)(j) = (1-1.0/(i+1))*((*std_vector)(j)) + 1.0/(i+1)*pow((*data)(i,j) - ((*mean_vector)(j)),2.0);
         }
     }
     
-    umatrix new_matrix(nrow,ncol);
+    matrix_ptr_type new_matrix(new umatrix(nrow,ncol));
     for(unsigned i = 0; i < nrow; ++i){
         for (unsigned j = 0; j < ncol; ++j){
-            new_matrix(i,j) = ((*data)(i,j) - mean_vector(j))/std_vector(j);
+            (*new_matrix)(i,j) = ((*data)(i,j) - ((*mean_vector)(j)))/((*std_vector)(j));
         }
     }
     
-    bt::tuple<umatrix,uvector,uvector > * ptuple = new bt::tuple<umatrix,uvector,uvector >(new_matrix,mean_vector,std_vector);
+    bt::tuple<matrix_ptr_type,vector_ptr_type,vector_ptr_type > * ptuple = new bt::tuple<matrix_ptr_type,vector_ptr_type,vector_ptr_type >(new_matrix,mean_vector,std_vector);
     tuple_ptr_type result_pt(ptuple);
+    std::cout<<"End normalizing"<<std::endl;
     return result_pt;
 }
 
@@ -118,7 +120,7 @@ std::pair<matrix_ptr_type,long_vector_ptr_type> data_processor::load_data(std::i
             }
         }
     }else{
-        data = matrix_ptr_type(new umatrix(nrow,ncol));
+        data = matrix_ptr_type(new umatrix(nrow,ncol,non_zeros));
         for (unsigned i = 0; i < nrow; ++ i){
             std::copy(input_vectors[i].begin(), input_vectors[i].end(), ublas::row(*data,i).begin());
         }
@@ -141,5 +143,3 @@ matrix_ptr_type data_processor::re_zscore(matrix_ptr_type data,const uvector& me
     }
     return pt;
 }
-
-std::pair<matrix_ptr_type,long_vector_ptr_type> load_sparse_data(std::istream& input_stream,long number_features) throw (std::exception);

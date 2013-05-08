@@ -29,7 +29,8 @@ namespace bc = boost::container;
 
 typedef ublas::matrix<float> umatrix;
 typedef ublas::compressed_matrix<float> cmatrix;
-typedef ublas::matrix<long> longmatrix;
+typedef cmatrix longmatrix;
+//typedef ublas::matrix<long> longmatrix;
 
 typedef ublas::vector<float> uvector;
 typedef ublas::compressed_vector<float> cvector;
@@ -45,8 +46,6 @@ typedef ublas::matrix_column<longmatrix> longmatrix_column;
 typedef ublas::matrix_row<cmatrix> cmatrix_row;
 typedef ublas::matrix_column<cmatrix> cmatrix_column;
 
-
-typedef boost::shared_ptr<bt::tuple<umatrix,uvector,uvector > > tuple_ptr_type;
 typedef boost::shared_ptr<umatrix> matrix_ptr_type;
 typedef boost::shared_ptr<cmatrix> cmatrix_ptr_type;
 typedef boost::shared_ptr<longmatrix> long_matrix_ptr_type;
@@ -55,4 +54,5 @@ typedef boost::shared_ptr<uvector> vector_ptr_type;
 typedef boost::shared_ptr<cvector> cvector_ptr_type;
 typedef boost::shared_ptr<longvector> long_vector_ptr_type;
 
+typedef boost::shared_ptr<bt::tuple<matrix_ptr_type,vector_ptr_type,vector_ptr_type > > tuple_ptr_type;
 #endif

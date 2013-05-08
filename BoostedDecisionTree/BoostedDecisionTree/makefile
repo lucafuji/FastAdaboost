@@ -7,7 +7,7 @@ CPP=g++
 INCLUDES=-I.:/opt/local/include/
 LDFLAGS=-L/opt/local/lib
 LIBRARIES=-lboost_program_options-mt -lboost_serialization-mt
-
+ARCHIVES=/opt/local/lib/libboost_program_options-mt.a /opt/local/lib/libboost_serialization-mt.a
 #directories
 ODIR=obj
 TEST_DIR= src
@@ -78,6 +78,9 @@ $(EXEC) : $(MAINOBJ)
 	$(CPP) -o $(BIN_DIR)/$(EXEC) $(OBJS) $(MAINOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES)
 
 exec:$(EXEC)
+	
+static:$(MAINOBJ)
+	$(CPP) -o $(BIN_DIR)/$(EXEC) $(OBJS) $(ARCHIVES) $(MAINOBJ) $(INCLUDES) $(LDFLAGS)
 
 debug : $(MAINOBJ)
 	$(CPP) -o $(BIN_DIR)/$(EXEC) $(OBJS) $(MAINOBJ) $(INCLUDES) $(LDFLAGS) $(LIBRARIES) 

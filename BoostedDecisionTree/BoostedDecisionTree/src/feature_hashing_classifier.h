@@ -45,7 +45,7 @@ private:
     long num_hash_bits;
     long seed;
     long len;
-    long_matrix_ptr_type hash_matrix;
+    cmatrix_ptr_type hash_matrix;
     void compute_hash_matrix(long_vector_ptr_type feature_index_vector);
     long hash_sign(long feature_index){return feature_index%2 == 0 ?1:-1;}
     long hash_value(long* feature_index_ptr){return MurmurHash64A(feature_index_ptr, len, seed);}

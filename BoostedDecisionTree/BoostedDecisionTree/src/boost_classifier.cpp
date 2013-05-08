@@ -15,6 +15,7 @@ BOOST_CLASS_EXPORT(boost_classifier)
 
 processed_data_ptr boost_classifier::preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps)
 {
+    std::cout<<"boost begin preprocessing"<<std::endl;
 #ifdef DEBUG
     std::cout<<"boost begin preprocessing"<<std::endl;
 #endif
@@ -23,11 +24,13 @@ processed_data_ptr boost_classifier::preprocess(matrix_ptr_type data,long_vector
     std::cout<<"boost end preprocessing"<<std::endl;
 #endif
     return basic_classifier->preprocess(data, labels, eps);
+    std::cout<<"boost end preprocessing"<<std::endl;
 }
 
 
 std::pair<float,long_vector_ptr_type>  boost_classifier::learn(processed_data_ptr p_data,vector_ptr_type weights)
 {
+    std::cout<<"boost begin learn"<<std::endl;
 #ifdef DEBUG
     std::cout<<"boost begin learn"<<std::endl;
 #endif

@@ -66,7 +66,13 @@ void train(po::variables_map vm) throw (std::exception)
             std::cout<<"no feature hashing"<<std::endl;
             classifier_ptr = new boost_classifier(vm["nrounds"].as<long>());
         }
-        processed_data_ptr p_data = classifier_ptr->preprocess(data_pair.first, data_pair.second,vm["episilon"].as<float>());
+        matrix_ptr_type data = data_pair.first;
+        long_vector_ptr_type labels = data_pair.second;
+        
+        if(vm.count("normalize")){
+            data = data_processor::z_score(data)->get<0>();
+        }
+        processed_data_ptr p_data = classifier_ptr->preprocess(data, labels,vm["episilon"].as<float>());
         
         vector_ptr_type weights(new uvector(0));//stub weights for boost classifier
         classifier_ptr->learn(p_data,weights);
@@ -109,12 +115,19 @@ void predict(po::variables_map vm) throw (std::exception)
             std::cout<<"load successfully!"<<std::endl;
         }
         
-        long_vector_ptr_type predicted_labels = classifier->predict(data_pair.first);
+        matrix_ptr_type data = data_pair.first;
+        long_vector_ptr_type labels = data_pair.second;
+        
+        if(vm.count("normalize")){
+            data = data_processor::z_score(data)->get<0>();
+        }
+        
+        long_vector_ptr_type predicted_labels = classifier->predict(data);
         std::cout<<"predicting successfully!"<<std::endl;
         std::copy(predicted_labels->begin(), predicted_labels->end(), std::ostream_iterator<float>(result_ofs,"\n"));
         
         if(vm.count("verbose")){//print verbose report
-            print_verbose_report(predicted_labels,data_pair.second);
+            print_verbose_report(predicted_labels,labels);
         }
     }catch(std::exception& e){
         std::cerr<<e.what()<<std::endl;

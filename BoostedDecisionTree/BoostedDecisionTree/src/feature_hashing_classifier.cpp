@@ -12,8 +12,9 @@
 BOOST_CLASS_EXPORT(feature_hashing_classifier)
 void feature_hashing_classifier::compute_hash_matrix(long_vector_ptr_type feature_index_vector)
 {
+    std::cout<<"compute_hash_matrix "<<std::endl;
     long n_feature = feature_index_vector->size();
-    long_matrix_ptr_type hash_matrix(new longmatrix(ublas::zero_matrix<long>(num_hash_bits,n_feature)));
+    cmatrix_ptr_type hash_matrix(new cmatrix(num_hash_bits,n_feature,n_feature));
     for(longvector::iterator iter = feature_index_vector->begin(); iter!= feature_index_vector->end(); ++iter){
         long row =  hash_value(&(*iter)) % num_hash_bits;
         if(row < 0){
@@ -21,7 +22,10 @@ void feature_hashing_classifier::compute_hash_matrix(long_vector_ptr_type featur
         }
         (*hash_matrix)(row,(*iter)) = hash_sign(*iter);
     }
-    this->hash_matrix = hash_matrix;}
+    this->hash_matrix = hash_matrix;
+    std::cout<<"end compute_hash_matrix "<<std::endl;
+}
+  
 
 //pre_hashing the data
 processed_data_ptr feature_hashing_classifier::preprocess(matrix_ptr_type data,long_vector_ptr_type labels,float eps)
@@ -34,11 +38,9 @@ processed_data_ptr feature_hashing_classifier::preprocess(matrix_ptr_type data,l
    
     compute_hash_matrix(feature_vector);
    
+    std::cout<<"begin hash data "<<std::endl;
     matrix_ptr_type hashed_data(new umatrix(ublas::trans(ublas::prod(*hash_matrix, ublas::trans(*data)))));
-    std::cout<<*hash_matrix<<std::endl;
-    std::cout<<*hashed_data<<std::endl;
-    std::cout<<*labels<<std::endl;
-    std::cout<<"computing hash4"<<std::endl;
+    std::cout<<"end hash data "<<std::endl;
     return basic_classifier->preprocess(hashed_data, labels,eps);
 }
 
