@@ -10,4 +10,4 @@ install:
   - .travis/install_clang_tools.sh
 
 script:
-  - ./travis/run_unittest.sh
+  - ./.travis/run_unittest.sh
