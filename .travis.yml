@@ -1,0 +1,12 @@
+language: cpp
+sudo: required
+
+env:
+  global:
+    - GTEST_ROOT=./build/googletest
+
+install:
+  - .travis/install_clang_tools.sh
+
+script:
+  - ./.travis/run_unittest.sh

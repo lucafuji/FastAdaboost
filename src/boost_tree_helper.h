@@ -15,7 +15,7 @@
 #include <boost/program_options/variables_map.hpp>
 
 namespace po = boost::program_options;
-void train(po::variables_map vm) throw (std::exception);
-void predict(po::variables_map vm) throw (std::exception);
+void train(po::variables_map vm) throw(std::exception);
+void predict(po::variables_map vm) throw(std::exception);
 
 #endif /* defined(__BoostedDecisionTree__boost_tree_helper__) */

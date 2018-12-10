@@ -1,3 +1,5 @@
+[![Build Status][ci-img]][ci]
+
 Fast Adaboost 
 ===============================================
 
@@ -5,9 +7,20 @@ Fast Adaboost is a adaboost library for classification task implemented in C++. 
 
 Build
 ===============================================
-To compile and build the program, you need to install boost library http://www.boost.org/users/download/
+To compile and build the program, you need to meet following prerequisites:
 
-After install the boost library,just input "make" under BoostedDecisionTree/BoostedDecisionTree/
+* cmake >= 3.9.2
+* g++ >= 4.9.2
+* boost lib >= 1.54.0
+
+You can install boost library from http://www.boost.org/users/download/
+
+Then you can use following commands to build and run the program
+```$bash
+cmake CMakeLists.txt
+make
+./FastAdaboost
+```
 
 
 Fast Heuristic Decision Tree
