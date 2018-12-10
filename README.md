@@ -1,4 +1,4 @@
-[![Build Status][ci-img]][ci]
+[![Build Status](https://travis-ci.com/lucafuji/FastAdaboost.svg?branch=master)](https://travis-ci.com/lucafuji/FastAdaboost)
 
 Fast Adaboost 
 ===============================================
