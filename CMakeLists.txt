@@ -8,7 +8,7 @@ include_directories(src)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost 1.58 REQUIRED serialization program_options)
+find_package(Boost 1.54 REQUIRED serialization program_options)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
