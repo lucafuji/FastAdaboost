@@ -7,7 +7,7 @@ Build
 ===============================================
 To compile and build the program, you need to meet following prerequisites:
 
-* cmake >= 3.1.0
+* cmake >= 3.9.2
 * g++ >= 4.9.2
 * boost lib >= 1.58.0
 
