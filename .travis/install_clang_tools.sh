@@ -14,4 +14,6 @@ popd
 mv /tmp/googletest ${output_dir}
 
 # install boost
+sudo add-apt-repository universe
+sudo apt-get update
 sudo apt-get install libboost-all-dev
