@@ -9,6 +9,7 @@
 #include "boost_classifier.h"
 #include "matrix_util.h"
 #include <algorithm>
+#include <cmath>
 
 BOOST_CLASS_EXPORT(boost_classifier)
 
