@@ -22,7 +22,6 @@
 #include <boost/container/list.hpp>
 #include <boost/variant.hpp>
 
-//#define DEBUG
 namespace ublas = boost::numeric::ublas;
 namespace bt = boost::tuples;
 namespace bc = boost::container;
@@ -36,7 +35,7 @@ typedef ublas::vector<float> uvector;
 typedef ublas::compressed_vector<float> cvector;
 typedef ublas::vector<long> longvector;
 
-typedef boost::variant<umatrix,cmatrix > data_matrix;
+typedef boost::variant<umatrix, cmatrix> data_matrix;
 
 //column and row
 typedef ublas::matrix_row<umatrix> umatrix_row;
@@ -54,5 +53,7 @@ typedef boost::shared_ptr<uvector> vector_ptr_type;
 typedef boost::shared_ptr<cvector> cvector_ptr_type;
 typedef boost::shared_ptr<longvector> long_vector_ptr_type;
 
-typedef boost::shared_ptr<bt::tuple<matrix_ptr_type,vector_ptr_type,vector_ptr_type > > tuple_ptr_type;
+typedef boost::shared_ptr<bt::tuple<matrix_ptr_type,
+                                    vector_ptr_type,
+                                    vector_ptr_type> > tuple_ptr_type;
 #endif
