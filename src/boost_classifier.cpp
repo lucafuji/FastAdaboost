@@ -9,6 +9,7 @@
 #include "boost_classifier.h"
 #include "matrix_util.h"
 #include <algorithm>
+#include <cmath>
 
 BOOST_CLASS_EXPORT(boost_classifier)
 
@@ -53,7 +54,7 @@ std::pair<float, long_vector_ptr_type> boost_classifier::learn(
     // -a(t)*y(i)*h(xi)
     uvector tmp_vec(-(*bc_weights)(t) * ublas::element_prod(*(p_data->tlabel), *h));
     //exp(-a(t)*y(i)*h(xi))
-    std::transform(tmp_vec.begin(), tmp_vec.end(), exp_vec.begin(), std::expf);
+    std::transform(tmp_vec.begin(), tmp_vec.end(), exp_vec.begin(), expf_op());
     *d = ublas::element_prod(*d, exp_vec) / z;
     std::cout << t + 1 << "/" << rounds << " " << (t + 1) / 1.0 / rounds * 100
               << "% completed" << std::endl;
