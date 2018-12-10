@@ -46,11 +46,12 @@ std::pair<float, long_vector_ptr_type> boost_classifier::learn(
 
     uvector exp_vec(nrow);
     uvector tmp_vec(-(*bc_weights)(t) * ublas::element_prod(*(p_data->tlabel),
-                                                            *h)); // -a(t)*y(i)*h(xi)
+
+    //exp(-a(t)*y(i)*h(xi))                                                        *h)); // -a(t)*y(i)*h(xi)
     std::transform(tmp_vec.begin(),
                    tmp_vec.end(),
                    exp_vec.begin(),
-                   std::expf);//exp(-a(t)*y(i)*h(xi))
+                   std::expf);
     *d = ublas::element_prod(*d, exp_vec) / z;
     std::cout << t + 1 << "/" << rounds << " " << (t + 1) / 1.0 / rounds * 100
               << "% completed" << std::endl;
