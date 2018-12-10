@@ -1,0 +1,13 @@
+language: go
+sudo: required
+go:
+    - "1.9"
+env:
+  global:
+    - GTEST_ROOT=./build/googletest
+
+install:
+  - .travis/install_clang_tools.sh
+
+script:
+  - ./travis/run_unittest.sh

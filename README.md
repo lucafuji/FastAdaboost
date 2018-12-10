@@ -17,6 +17,7 @@ Then you can use following commands to build and run the program
 ```$bash
 cmake CMakeLists.txt
 make
+./FastAdaboost
 ```
 
 
