@@ -1,7 +1,7 @@
 Fast Adaboost 
 ===============================================
 
-Fast Adaboost is a adaboost library for classification task implemented in C++.AdaBoost, short for Adaptive Boosting, is a meta machine learning algorithm that can be used in conjunction with many other learning algorithms to improve their performance.Its main idea is to use weak learner to create strong learners and subsequent classifiers builtare tweaked in favor of those instances misclassified by previous classifier.One kind of weak classifiers is decision tree that uses some heuristics to find suboptimal trees such as using information gain or gini impurity.However most of those heuristics are too slow .This library aims at implementing a fast ada-boost library based on decision tree classifiers. Also , I will use feature hashing trick to deal with high dimension sparse data
+Fast Adaboost is a adaboost library for classification task implemented in C++. AdaBoost, short for Adaptive Boosting, is a meta machine learning algorithm that can be used in conjunction with many other learning algorithms to improve their performance. Its main idea is to use weak learner to create strong learners and subsequent classifiers builtare tweaked in favor of those instances misclassified by previous classifier. One kind of weak classifiers is decision tree that uses some heuristics to find suboptimal trees such as using information gain or gini impurity. However most of those heuristics are too slow. This library aims at implementing a fast ada-boost library based on decision tree classifiers. Also, I will use feature hashing trick to deal with high dimension sparse data
 
 Build
 ===============================================
