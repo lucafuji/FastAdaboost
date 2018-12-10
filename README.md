@@ -9,7 +9,7 @@ To compile and build the program, you need to meet following prerequisites:
 
 * cmake >= 3.9.2
 * g++ >= 4.9.2
-* boost lib >= 1.58.0
+* boost lib >= 1.54.0
 
 You can install boost library from http://www.boost.org/users/download/
 
