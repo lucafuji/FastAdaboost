@@ -9,9 +9,14 @@
 #include "boost_classifier.h"
 #include "matrix_util.h"
 #include <algorithm>
-#include <cmath>
 
 BOOST_CLASS_EXPORT(boost_classifier)
+
+struct expf_op {
+  float operator() (float f) const {
+    return expf(f);
+  }
+};
 
 processed_data_ptr boost_classifier::preprocess(matrix_ptr_type data,
                                                 long_vector_ptr_type labels,
@@ -45,13 +50,10 @@ std::pair<float, long_vector_ptr_type> boost_classifier::learn(
     float z = 2 * sqrt(error * (1 - error));
 
     uvector exp_vec(nrow);
-    uvector tmp_vec(-(*bc_weights)(t) * ublas::element_prod(*(p_data->tlabel),
-
-    //exp(-a(t)*y(i)*h(xi))                                                        *h)); // -a(t)*y(i)*h(xi)
-    std::transform(tmp_vec.begin(),
-                   tmp_vec.end(),
-                   exp_vec.begin(),
-                   std::expf);
+    // -a(t)*y(i)*h(xi)
+    uvector tmp_vec(-(*bc_weights)(t) * ublas::element_prod(*(p_data->tlabel), *h));
+    //exp(-a(t)*y(i)*h(xi))
+    std::transform(tmp_vec.begin(), tmp_vec.end(), exp_vec.begin(), std::expf);
     *d = ublas::element_prod(*d, exp_vec) / z;
     std::cout << t + 1 << "/" << rounds << " " << (t + 1) / 1.0 / rounds * 100
               << "% completed" << std::endl;
