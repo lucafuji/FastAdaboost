@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/lucafuji/FastAdaboost.svg?branch=master)](https://travis-ci.com/lucafuji/FastAdaboost)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flucafuji%2FFastAdaboost.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flucafuji%2FFastAdaboost?ref=badge_shield)
 
 Fast Adaboost 
 ===============================================
@@ -34,3 +35,7 @@ Feature Hashing
 
 Feature hashing is an effective strategy for dimensionality reduction and practical nonparametric estimation.Feature Hashing for Large Scale Multitask Learning show that interaction between random subspaces is negligible with high probability.
 In this library I apply feature hashing to the data to further speed up the learning and predicting phase.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flucafuji%2FFastAdaboost.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Flucafuji%2FFastAdaboost?ref=badge_large)
