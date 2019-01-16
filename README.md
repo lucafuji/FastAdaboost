@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/lucafuji/FastAdaboost.svg?branch=master)](https://travis-ci.com/lucafuji/FastAdaboost)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flucafuji%2FFastAdaboost.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flucafuji%2FFastAdaboost?ref=badge_shield)
-[![Gitter chat](https://badges.gitter.im/FastAdaboost/gitter.png)](https://gitter.im/FastAdaboost/gitter)
+[![Gitter chat](https://badges.gitter.im/FastAdaboost/community.png)](https://gitter.im/FastAdaboost/community)
 
 Fast Adaboost 
 ===============================================
